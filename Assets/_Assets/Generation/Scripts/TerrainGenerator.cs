@@ -2,7 +2,7 @@ using UnityEngine;
 
 public static class TerrainGenerator
 {
-    public static BlockType[,,] GenerateTerrain(int xOffset, int zOffset)
+    public static BlockType[,,] GenerateTerrain(float xOffset, float zOffset)
     {
         BlockType[,,] result = new BlockType[ChunkRenderer.ChunkWidth, ChunkRenderer.ChunkHeight, ChunkRenderer.ChunkWidth];
         

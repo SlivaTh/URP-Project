@@ -10,7 +10,8 @@ public class ChunkRenderer : MonoBehaviour
     public const int ChunkHeight = 128;
     public const float BlockScale = 1f;
     
-    public BlockType[,,] Blocks = new BlockType[ChunkWidth, ChunkHeight, ChunkWidth];
+    public ChunkData ChunkData;
+    public GameWorld ParentGameWorld;
 
     private List<Vector3> _vertices = new List<Vector3>();
     private List<int> _triangles = new List<int>();
@@ -18,9 +19,7 @@ public class ChunkRenderer : MonoBehaviour
     private void Start()
     {
         Mesh chunkMesh = new Mesh();
-
-        Blocks = TerrainGenerator.GenerateTerrain((int)transform.position.x,(int)transform.position.z);
-
+        
         for (int y = 0; y < ChunkHeight; y++)
         {
             for (int x = 0; x < ChunkWidth; x++)
@@ -67,11 +66,47 @@ public class ChunkRenderer : MonoBehaviour
             blockPosition.y >= 0 && blockPosition.y < ChunkHeight &&
             blockPosition.z >= 0 && blockPosition.z < ChunkWidth)
         {
-            return Blocks[blockPosition.x, blockPosition.y, blockPosition.z];
+            return ChunkData.Blocks[blockPosition.x, blockPosition.y, blockPosition.z];
         }
         else
         {
-            return BlockType.Air;
+            if (blockPosition.y < 0 || blockPosition.y >= ChunkHeight)
+            {
+                return BlockType.Air;
+            }
+            
+            Vector2Int adjacentChunkPosition = ChunkData.ChunkPosition;
+            
+            if (blockPosition.x < 0)
+            {
+                adjacentChunkPosition.x--;
+                blockPosition.x += ChunkWidth;
+            }
+            else if (blockPosition.x >= ChunkWidth)
+            {
+                adjacentChunkPosition.x++;
+                blockPosition.x -= ChunkWidth;
+            }
+            
+            if (blockPosition.z < 0)
+            {
+                adjacentChunkPosition.y--;
+                blockPosition.z += ChunkWidth;
+            }
+            else if (blockPosition.z >= ChunkWidth)
+            {
+                adjacentChunkPosition.y++;
+                blockPosition.z -= ChunkWidth;
+            }
+
+            if (ParentGameWorld.ChunkDatas.TryGetValue(adjacentChunkPosition, out ChunkData adjacentChunk))
+            {
+                return adjacentChunk.Blocks[blockPosition.x, blockPosition.y, blockPosition.z];
+            }
+            else
+            {
+                return BlockType.Air;
+            }
         }
     }
 
