@@ -8,7 +8,7 @@ public class ChunkRenderer : MonoBehaviour
 {
     public const int ChunkWidth = 10;
     public const int ChunkHeight = 128;
-    public const int BlockScale = 128;
+    public const float BlockScale = 1f;
     
     public BlockType[,,] Blocks = new BlockType[ChunkWidth, ChunkHeight, ChunkWidth];
 
@@ -77,60 +77,60 @@ public class ChunkRenderer : MonoBehaviour
 
     private void GenerateRightSide(Vector3Int blockPosition)
     {
-        _vertices.Add(new Vector3(1, 0, 0) + blockPosition);
-        _vertices.Add(new Vector3(1, 1, 0) + blockPosition);
-        _vertices.Add(new Vector3(1, 0, 1) + blockPosition);
-        _vertices.Add(new Vector3(1, 1, 1) + blockPosition);
+        _vertices.Add((new Vector3(1, 0, 0) + blockPosition) * BlockScale);
+        _vertices.Add((new Vector3(1, 1, 0) + blockPosition) * BlockScale);
+        _vertices.Add((new Vector3(1, 0, 1) + blockPosition) * BlockScale);
+        _vertices.Add((new Vector3(1, 1, 1) + blockPosition) * BlockScale);
 
         AddLastVerticesSquare();
     }
     
     private void GenerateLeftSide(Vector3Int blockPosition)
     {
-        _vertices.Add(new Vector3(0, 0, 0) + blockPosition);
-        _vertices.Add(new Vector3(0, 0, 1) + blockPosition);
-        _vertices.Add(new Vector3(0, 1, 0) + blockPosition);
-        _vertices.Add(new Vector3(0, 1, 1) + blockPosition);
+        _vertices.Add((new Vector3(0, 0, 0) + blockPosition) * BlockScale);
+        _vertices.Add((new Vector3(0, 0, 1) + blockPosition) * BlockScale);
+        _vertices.Add((new Vector3(0, 1, 0) + blockPosition) * BlockScale);
+        _vertices.Add((new Vector3(0, 1, 1) + blockPosition) * BlockScale);
 
         AddLastVerticesSquare();
     }
     
     private void GenerateFrontSide(Vector3Int blockPosition)
     {
-        _vertices.Add(new Vector3(1, 1, 1) + blockPosition);
-        _vertices.Add(new Vector3(0, 1, 1) + blockPosition);
-        _vertices.Add(new Vector3(1, 0, 1) + blockPosition);
-        _vertices.Add(new Vector3(0, 0, 1) + blockPosition);
+        _vertices.Add((new Vector3(1, 1, 1) + blockPosition) * BlockScale);
+        _vertices.Add((new Vector3(0, 1, 1) + blockPosition) * BlockScale);
+        _vertices.Add((new Vector3(1, 0, 1) + blockPosition) * BlockScale);
+        _vertices.Add((new Vector3(0, 0, 1) + blockPosition) * BlockScale);
 
         AddLastVerticesSquare();
     }
     
     private void GenerateBackSide(Vector3Int blockPosition)
     {
-        _vertices.Add(new Vector3(0, 0, 0) + blockPosition);
-        _vertices.Add(new Vector3(0, 1, 0) + blockPosition);
-        _vertices.Add(new Vector3(1, 0, 0) + blockPosition);
-        _vertices.Add(new Vector3(1, 1, 0) + blockPosition);
+        _vertices.Add((new Vector3(0, 0, 0) + blockPosition) * BlockScale);
+        _vertices.Add((new Vector3(0, 1, 0) + blockPosition) * BlockScale);
+        _vertices.Add((new Vector3(1, 0, 0) + blockPosition) * BlockScale);
+        _vertices.Add((new Vector3(1, 1, 0) + blockPosition) * BlockScale);
 
         AddLastVerticesSquare();
     }
     
     private void GenerateTopSide(Vector3Int blockPosition)
     {
-        _vertices.Add(new Vector3(0, 1, 0) + blockPosition);
-        _vertices.Add(new Vector3(0, 1, 1) + blockPosition);
-        _vertices.Add(new Vector3(1, 1, 0) + blockPosition);
-        _vertices.Add(new Vector3(1, 1, 1) + blockPosition);
+        _vertices.Add((new Vector3(0, 1, 0) + blockPosition) * BlockScale);
+        _vertices.Add((new Vector3(0, 1, 1) + blockPosition) * BlockScale);
+        _vertices.Add((new Vector3(1, 1, 0) + blockPosition) * BlockScale);
+        _vertices.Add((new Vector3(1, 1, 1) + blockPosition) * BlockScale);
 
         AddLastVerticesSquare();
     }
     
     private void GenerateBottomSide(Vector3Int blockPosition)
     {
-        _vertices.Add(new Vector3(1, 0, 1) + blockPosition);
-        _vertices.Add(new Vector3(0, 0, 1) + blockPosition);
-        _vertices.Add(new Vector3(1, 0, 0) + blockPosition);
-        _vertices.Add(new Vector3(0, 0, 0) + blockPosition);
+        _vertices.Add((new Vector3(1, 0, 1) + blockPosition) * BlockScale);
+        _vertices.Add((new Vector3(0, 0, 1) + blockPosition) * BlockScale);
+        _vertices.Add((new Vector3(1, 0, 0) + blockPosition) * BlockScale);
+        _vertices.Add((new Vector3(0, 0, 0) + blockPosition) * BlockScale);
 
         AddLastVerticesSquare();
     }
