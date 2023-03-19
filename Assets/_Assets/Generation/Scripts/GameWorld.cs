@@ -145,9 +145,6 @@ public class GameWorld : MonoBehaviour
         if (blockWorldPos.x < 0) chunkPosition.x--;
         if (blockWorldPos.z < 0) chunkPosition.y--;
 
-        if (blockWorldPos.x > ChunkRenderer.ChunkWidth) chunkPosition.x++;
-        if (blockWorldPos.z > ChunkRenderer.ChunkWidth) chunkPosition.y++;
-        
         return chunkPosition;
     }
 }
