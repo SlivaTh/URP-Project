@@ -63,6 +63,20 @@ public class GameWorld : MonoBehaviour
             }
         }
     }
+    
+    [ContextMenu("Regenerate World")]
+    public void Regenerate()
+    {
+        terrainGenerator.Init();
+        
+        foreach (var chunkData in ChunkDatas)
+        {
+            Destroy(chunkData.Value.Renderer.gameObject);
+        }
+        ChunkDatas.Clear();
+
+        StartCoroutine(Generate(false));
+    }
 
     private void LoadChunk(Vector2Int chunkPosition)
     {
@@ -116,10 +130,24 @@ public class GameWorld : MonoBehaviour
                 }
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 
     public Vector2Int GetChunkContainingBlock(Vector3Int blockWorldPos)
     {
-        return new Vector2Int(blockWorldPos.x / ChunkRenderer.ChunkWidth, blockWorldPos.z / ChunkRenderer.ChunkWidth);
+        Vector2Int chunkPosition = new Vector2Int(blockWorldPos.x / ChunkRenderer.ChunkWidth,
+            blockWorldPos.z / ChunkRenderer.ChunkWidth);
+        
+        if (blockWorldPos.x < 0) chunkPosition.x--;
+        if (blockWorldPos.z < 0) chunkPosition.y--;
+
+        if (blockWorldPos.x > ChunkRenderer.ChunkWidth) chunkPosition.x++;
+        if (blockWorldPos.z > ChunkRenderer.ChunkWidth) chunkPosition.y++;
+        
+        return chunkPosition;
     }
 }

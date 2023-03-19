@@ -66,6 +66,7 @@ public class ChunkRenderer : MonoBehaviour
     
     public void DestroyBlock(Vector3Int blockPosition)
     {
+        Debug.Log($"<color=red>x={blockPosition.x}</color> <color=lime>y={blockPosition.y}</color> <color=yellow>z={blockPosition.z}</color>");
         ChunkData.Blocks[blockPosition.x, blockPosition.y, blockPosition.z] = BlockType.Air;
         RegenerateMesh();
     }
