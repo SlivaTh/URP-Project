@@ -60,7 +60,7 @@ public class ChunkRenderer : MonoBehaviour
 
     public void SpawnBlock(Vector3Int blockPosition)
     {
-        ChunkData.Blocks[blockPosition.x, blockPosition.y, blockPosition.z] = BlockType.Stone;
+        ChunkData.Blocks[blockPosition.x, blockPosition.y, blockPosition.z] = BlockType.Wood;
         RegenerateMesh();
     }
     
@@ -82,37 +82,37 @@ public class ChunkRenderer : MonoBehaviour
         if (GetBlockAtPosition(blockPosition + Vector3Int.right) == 0)
         {
             GenerateRightSide(blockPosition);
-            AddUvs(GetBlockAtPosition(blockPosition));
+            AddUvs(GetBlockAtPosition(blockPosition), Vector3Int.right);
         }
 
         if (GetBlockAtPosition(blockPosition + Vector3Int.left) == 0)
         {
             GenerateLeftSide(blockPosition);
-            AddUvs(GetBlockAtPosition(blockPosition));
+            AddUvs(GetBlockAtPosition(blockPosition), Vector3Int.left);
         }
 
         if (GetBlockAtPosition(blockPosition + Vector3Int.forward) == 0)
         {
             GenerateFrontSide(blockPosition);
-            AddUvs(GetBlockAtPosition(blockPosition));
+            AddUvs(GetBlockAtPosition(blockPosition), Vector3Int.forward);
         }
 
         if (GetBlockAtPosition(blockPosition + Vector3Int.back) == 0)
         {
             GenerateBackSide(blockPosition);
-            AddUvs(GetBlockAtPosition(blockPosition));
+            AddUvs(GetBlockAtPosition(blockPosition), Vector3Int.back);
         }
 
         if (GetBlockAtPosition(blockPosition + Vector3Int.up) == 0)
         {
             GenerateTopSide(blockPosition);
-            AddUvs(GetBlockAtPosition(blockPosition));
+            AddUvs(GetBlockAtPosition(blockPosition), Vector3Int.up);
         }
 
         if (GetBlockAtPosition(blockPosition + Vector3Int.down) == 0)
         {
             GenerateBottomSide(blockPosition);
-            AddUvs(GetBlockAtPosition(blockPosition));
+            AddUvs(GetBlockAtPosition(blockPosition), Vector3Int.down);
         }
     }
 
@@ -237,23 +237,110 @@ public class ChunkRenderer : MonoBehaviour
         _triangles.Add(_vertices.Count - 2);
     }
 
-    private void AddUvs(BlockType blockType)
+    private void AddUvs(BlockType blockType, Vector3Int facing)
     {
         switch (blockType)
         {
             case BlockType.Air:
+                
                 break;
             case BlockType.Grass:
-                _uvs.Add(new Vector2(64f / 256,240f / 256));
-                _uvs.Add(new Vector2(64f / 256,1));
-                _uvs.Add(new Vector2(80f / 256,240f / 256));
-                _uvs.Add(new Vector2(80f / 256,1));
+                if (facing == Vector3Int.up)
+                {
+                    _uvs.Add(new Vector2(0f,1));
+                    _uvs.Add(new Vector2(0f,240f / 256));
+                    _uvs.Add(new Vector2(16f / 256,1));
+                    _uvs.Add(new Vector2(16f / 256,240f / 256));
+                }
+                else if(facing == Vector3Int.down)
+                {
+                    _uvs.Add(new Vector2(32f / 256,240f / 256));
+                    _uvs.Add(new Vector2(32f / 256,1));
+                    _uvs.Add(new Vector2(48f / 256,240f / 256));
+                    _uvs.Add(new Vector2(48f / 256,1));
+                }
+                else if (facing == Vector3Int.right)
+                {
+                    _uvs.Add(new Vector2(48f / 256,240f / 256));
+                    _uvs.Add(new Vector2(48f / 256,1));
+                    _uvs.Add(new Vector2(64f / 256,240f / 256));
+                    _uvs.Add(new Vector2(64f / 256,1));
+                }
+                else if(facing == Vector3Int.left)
+                {
+                    _uvs.Add(new Vector2(64f / 256,240f / 256));
+                    _uvs.Add(new Vector2(48f / 256,240f / 256));
+                    _uvs.Add(new Vector2(64f / 256,1));
+                    _uvs.Add(new Vector2(48f / 256,1));
+                }
+                else if(facing == Vector3Int.forward)
+                {
+                    _uvs.Add(new Vector2(48f / 256,1));
+                    _uvs.Add(new Vector2(64f / 256,1));
+                    _uvs.Add(new Vector2(48f / 256,240f / 256));
+                    _uvs.Add(new Vector2(64f / 256,240f / 256));
+                }
+                else if(facing == Vector3Int.back)
+                {
+                    _uvs.Add(new Vector2(48f / 256,240f / 256));
+                    _uvs.Add(new Vector2(48f / 256,1));
+                    _uvs.Add(new Vector2(64f / 256,240f / 256));
+                    _uvs.Add(new Vector2(64f / 256,1));
+                }
+
                 break;
             case BlockType.Stone:
                 _uvs.Add(new Vector2(16f / 256,240f / 256));
                 _uvs.Add(new Vector2(16f / 256,1));
                 _uvs.Add(new Vector2(32f / 256,240f / 256));
                 _uvs.Add(new Vector2(32f / 256,1));
+                
+                break;
+            
+            case BlockType.Wood:
+                if (facing == Vector3Int.up)
+                {
+                    _uvs.Add(new Vector2(64f / 256,1));
+                    _uvs.Add(new Vector2(64f / 256,240f / 256));
+                    _uvs.Add(new Vector2(80f / 256,1));
+                    _uvs.Add(new Vector2(80f / 256,240f / 256));
+                }
+                else if(facing == Vector3Int.down)
+                {
+                    _uvs.Add(new Vector2(64f / 256,240f / 256));
+                    _uvs.Add(new Vector2(64f / 256,1));
+                    _uvs.Add(new Vector2(80f / 256,240f / 256));
+                    _uvs.Add(new Vector2(80f / 256,1));
+                }
+                else if (facing == Vector3Int.right)
+                {
+                    _uvs.Add(new Vector2(64f / 256,240f / 256));
+                    _uvs.Add(new Vector2(64f / 256,1));
+                    _uvs.Add(new Vector2(80f / 256,240f / 256));
+                    _uvs.Add(new Vector2(80f / 256,1));
+                }
+                else if(facing == Vector3Int.left)
+                {
+                    _uvs.Add(new Vector2(80f / 256,240f / 256));
+                    _uvs.Add(new Vector2(64f / 256,240f / 256));
+                    _uvs.Add(new Vector2(80f / 256,1));
+                    _uvs.Add(new Vector2(64f / 256,1));
+                }
+                else if(facing == Vector3Int.forward)
+                {
+                    _uvs.Add(new Vector2(64f / 256,1));
+                    _uvs.Add(new Vector2(80f / 256,1));
+                    _uvs.Add(new Vector2(64f / 256,240f / 256));
+                    _uvs.Add(new Vector2(80f / 256,240f / 256));
+                }
+                else if(facing == Vector3Int.back)
+                {
+                    _uvs.Add(new Vector2(64f / 256,240f / 256));
+                    _uvs.Add(new Vector2(64f / 256,1));
+                    _uvs.Add(new Vector2(80f / 256,240f / 256));
+                    _uvs.Add(new Vector2(80f / 256,1));
+                }
+                
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(blockType), blockType, null);

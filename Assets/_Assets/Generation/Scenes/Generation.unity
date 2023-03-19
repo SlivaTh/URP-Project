@@ -500,6 +500,7 @@ GameObject:
   m_Component:
   - component: {fileID: 354055510}
   - component: {fileID: 354055509}
+  - component: {fileID: 354055511}
   m_Layer: 0
   m_Name: Game World
   m_TagString: Untagged
@@ -521,6 +522,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chunkPrefab: {fileID: 468488692049590131, guid: 127a75b02f162874abca884666a461f3,
     type: 3}
+  terrainGenerator: {fileID: 354055511}
 --- !u!4 &354055510
 Transform:
   m_ObjectHideFlags: 0
@@ -536,6 +538,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &354055511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354055508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e01d3b421aa8c7e4888551c56b5555a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &418170962
 GameObject:
   m_ObjectHideFlags: 0
@@ -1032,7 +1046,7 @@ RectTransform:
   m_GameObject: {fileID: 921427103}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1539675590}

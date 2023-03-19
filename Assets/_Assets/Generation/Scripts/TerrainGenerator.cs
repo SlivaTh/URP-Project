@@ -1,9 +1,18 @@
 using UnityEngine;
 
-public static class TerrainGenerator
+public class TerrainGenerator : MonoBehaviour
 {
-    public static BlockType[,,] GenerateTerrain(float xOffset, float zOffset)
+    public class NoiseOctaveSettings
     {
+        public FastNoiseLite.NoiseType NoiseType;
+    }
+    
+    public BlockType[,,] GenerateTerrain(float xOffset, float zOffset)
+    {
+        FastNoiseLite noise = new FastNoiseLite();
+        noise.SetNoiseType(FastNoiseLite.NoiseType.Perlin);
+        float f = noise.GetNoise(1,2);
+        
         BlockType[,,] result = new BlockType[ChunkRenderer.ChunkWidth, ChunkRenderer.ChunkHeight, ChunkRenderer.ChunkWidth];
         
         for (int x = 0; x < ChunkRenderer.ChunkWidth; x++)
