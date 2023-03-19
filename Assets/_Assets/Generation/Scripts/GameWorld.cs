@@ -130,7 +130,10 @@ public class GameWorld : MonoBehaviour
                     {
                         chunkData.Renderer.SpawnBlock(blockPosition);
                     }
-
+                    
+                    // TODO : WorkAround Start !!!
+                    // Quick Fix
+                    
                     Vector2Int chunkPos_2;
                     if (blockPosition.x == ChunkRenderer.ChunkWidth - 1)
                     {
@@ -164,6 +167,8 @@ public class GameWorld : MonoBehaviour
                             chunkData_2.Renderer.UpdateChunk();
                         }
                     }
+                    
+                    // TODO : WorkAround Finish !!!
                     
                 }
             }
