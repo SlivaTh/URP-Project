@@ -13,12 +13,26 @@ public class ChunkRenderer : MonoBehaviour
     public ChunkData ChunkData;
     public GameWorld ParentGameWorld;
 
+    private Mesh _chunkMesh;
+
     private List<Vector3> _vertices = new List<Vector3>();
+    private List<Vector2> _uvs = new List<Vector2>();
     private List<int> _triangles = new List<int>();
 
     private void Start()
     {
-        Mesh chunkMesh = new Mesh();
+        _chunkMesh = new Mesh();
+        
+        RegenerateMesh();
+
+        GetComponent<MeshFilter>().mesh = _chunkMesh;
+    }
+
+    private void RegenerateMesh()
+    {
+        _vertices.Clear();
+        _uvs.Clear();
+        _triangles.Clear();
         
         for (int y = 0; y < ChunkHeight; y++)
         {
@@ -30,17 +44,30 @@ public class ChunkRenderer : MonoBehaviour
                 }
             }
         }
-        
-        chunkMesh.Optimize();
 
-        chunkMesh.RecalculateNormals();
-        chunkMesh.RecalculateBounds();
-
-        chunkMesh.vertices = _vertices.ToArray();
-        chunkMesh.triangles = _triangles.ToArray();
+        _chunkMesh.triangles = Array.Empty<int>();
+        _chunkMesh.vertices = _vertices.ToArray();
+        _chunkMesh.uv = _uvs.ToArray();
+        _chunkMesh.triangles = _triangles.ToArray();
         
-        GetComponent<MeshFilter>().mesh = chunkMesh;
-        GetComponent<MeshCollider>().sharedMesh = chunkMesh;
+        _chunkMesh.Optimize();
+        
+        _chunkMesh.RecalculateNormals();
+        _chunkMesh.RecalculateBounds();
+        
+        GetComponent<MeshCollider>().sharedMesh = _chunkMesh;
+    }
+
+    public void SpawnBlock(Vector3Int blockPosition)
+    {
+        ChunkData.Blocks[blockPosition.x, blockPosition.y, blockPosition.z] = BlockType.Grass;
+        RegenerateMesh();
+    }
+    
+    public void DestroyBlock(Vector3Int blockPosition)
+    {
+        ChunkData.Blocks[blockPosition.x, blockPosition.y, blockPosition.z] = BlockType.Air;
+        RegenerateMesh();
     }
 
     private void GenerateBlock(int x, int y, int z)
@@ -172,6 +199,11 @@ public class ChunkRenderer : MonoBehaviour
 
     private void AddLastVerticesSquare()
     {
+        _uvs.Add(new Vector2(64f / 256,240f / 256));
+        _uvs.Add(new Vector2(64f / 256,1));
+        _uvs.Add(new Vector2(80f / 256,240f / 256));
+        _uvs.Add(new Vector2(80f / 256,1));
+        
         _triangles.Add(_vertices.Count - 4);
         _triangles.Add(_vertices.Count - 3);
         _triangles.Add(_vertices.Count - 2);
