@@ -60,7 +60,7 @@ public class ChunkRenderer : MonoBehaviour
 
     public void SpawnBlock(Vector3Int blockPosition)
     {
-        ChunkData.Blocks[blockPosition.x, blockPosition.y, blockPosition.z] = BlockType.Grass;
+        ChunkData.Blocks[blockPosition.x, blockPosition.y, blockPosition.z] = BlockType.Stone;
         RegenerateMesh();
     }
     
@@ -78,13 +78,42 @@ public class ChunkRenderer : MonoBehaviour
         {
             return;
         }
-        
-        if(GetBlockAtPosition(blockPosition + Vector3Int.right) == 0) GenerateRightSide(blockPosition);
-        if(GetBlockAtPosition(blockPosition + Vector3Int.left) == 0) GenerateLeftSide(blockPosition);
-        if(GetBlockAtPosition(blockPosition + Vector3Int.forward) == 0) GenerateFrontSide(blockPosition);
-        if(GetBlockAtPosition(blockPosition + Vector3Int.back) == 0) GenerateBackSide(blockPosition);
-        if(GetBlockAtPosition(blockPosition + Vector3Int.up) == 0) GenerateTopSide(blockPosition);
-        if (GetBlockAtPosition(blockPosition + Vector3Int.down) == 0) GenerateBottomSide(blockPosition);
+
+        if (GetBlockAtPosition(blockPosition + Vector3Int.right) == 0)
+        {
+            GenerateRightSide(blockPosition);
+            AddUvs(GetBlockAtPosition(blockPosition));
+        }
+
+        if (GetBlockAtPosition(blockPosition + Vector3Int.left) == 0)
+        {
+            GenerateLeftSide(blockPosition);
+            AddUvs(GetBlockAtPosition(blockPosition));
+        }
+
+        if (GetBlockAtPosition(blockPosition + Vector3Int.forward) == 0)
+        {
+            GenerateFrontSide(blockPosition);
+            AddUvs(GetBlockAtPosition(blockPosition));
+        }
+
+        if (GetBlockAtPosition(blockPosition + Vector3Int.back) == 0)
+        {
+            GenerateBackSide(blockPosition);
+            AddUvs(GetBlockAtPosition(blockPosition));
+        }
+
+        if (GetBlockAtPosition(blockPosition + Vector3Int.up) == 0)
+        {
+            GenerateTopSide(blockPosition);
+            AddUvs(GetBlockAtPosition(blockPosition));
+        }
+
+        if (GetBlockAtPosition(blockPosition + Vector3Int.down) == 0)
+        {
+            GenerateBottomSide(blockPosition);
+            AddUvs(GetBlockAtPosition(blockPosition));
+        }
     }
 
     private BlockType GetBlockAtPosition(Vector3Int blockPosition)
@@ -199,11 +228,6 @@ public class ChunkRenderer : MonoBehaviour
 
     private void AddLastVerticesSquare()
     {
-        _uvs.Add(new Vector2(64f / 256,240f / 256));
-        _uvs.Add(new Vector2(64f / 256,1));
-        _uvs.Add(new Vector2(80f / 256,240f / 256));
-        _uvs.Add(new Vector2(80f / 256,1));
-        
         _triangles.Add(_vertices.Count - 4);
         _triangles.Add(_vertices.Count - 3);
         _triangles.Add(_vertices.Count - 2);
@@ -211,5 +235,28 @@ public class ChunkRenderer : MonoBehaviour
         _triangles.Add(_vertices.Count - 3);
         _triangles.Add(_vertices.Count - 1);
         _triangles.Add(_vertices.Count - 2);
+    }
+
+    private void AddUvs(BlockType blockType)
+    {
+        switch (blockType)
+        {
+            case BlockType.Air:
+                break;
+            case BlockType.Grass:
+                _uvs.Add(new Vector2(64f / 256,240f / 256));
+                _uvs.Add(new Vector2(64f / 256,1));
+                _uvs.Add(new Vector2(80f / 256,240f / 256));
+                _uvs.Add(new Vector2(80f / 256,1));
+                break;
+            case BlockType.Stone:
+                _uvs.Add(new Vector2(16f / 256,240f / 256));
+                _uvs.Add(new Vector2(16f / 256,1));
+                _uvs.Add(new Vector2(32f / 256,240f / 256));
+                _uvs.Add(new Vector2(32f / 256,1));
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(blockType), blockType, null);
+        }
     }
 }
