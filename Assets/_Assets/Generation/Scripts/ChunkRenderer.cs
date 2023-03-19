@@ -72,6 +72,11 @@ public class ChunkRenderer : MonoBehaviour
         RegenerateMesh();
     }
 
+    public void UpdateChunk()
+    {
+        RegenerateMesh();
+    }
+    
     private void GenerateBlock(int x, int y, int z)
     {
         Vector3Int blockPosition = new Vector3Int(x, y, z);

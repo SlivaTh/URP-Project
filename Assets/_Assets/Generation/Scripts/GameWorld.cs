@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameWorld : MonoBehaviour
 {
@@ -116,17 +117,54 @@ public class GameWorld : MonoBehaviour
                 }
                 Vector3Int blockWorldPos = Vector3Int.FloorToInt(blockCenter / ChunkRenderer.BlockScale);
                 Vector2Int chunkPos = GetChunkContainingBlock(blockWorldPos);
+
                 if (ChunkDatas.TryGetValue(chunkPos, out ChunkData chunkData))
                 {
                     Vector3Int chunkOrigin = new Vector3Int(chunkPos.x, 0, chunkPos.y) * ChunkRenderer.ChunkWidth;
+                    Vector3Int blockPosition = blockWorldPos - chunkOrigin;
                     if (isDestroying)
                     {
-                        chunkData.Renderer.DestroyBlock(blockWorldPos - chunkOrigin);
+                        chunkData.Renderer.DestroyBlock(blockPosition);
                     }
                     else
                     {
-                        chunkData.Renderer.SpawnBlock(blockWorldPos - chunkOrigin);
+                        chunkData.Renderer.SpawnBlock(blockPosition);
                     }
+
+                    Vector2Int chunkPos_2;
+                    if (blockPosition.x == ChunkRenderer.ChunkWidth - 1)
+                    {
+                        chunkPos_2 = GetChunkContainingBlock(blockWorldPos + Vector3Int.right);
+                        if (ChunkDatas.TryGetValue(chunkPos_2, out ChunkData chunkData_2))
+                        {
+                            chunkData_2.Renderer.UpdateChunk();
+                        }
+                    }
+                    if (blockPosition.z == ChunkRenderer.ChunkWidth - 1)
+                    {
+                        chunkPos_2 = GetChunkContainingBlock(blockWorldPos + Vector3Int.forward);
+                        if (ChunkDatas.TryGetValue(chunkPos_2, out ChunkData chunkData_2))
+                        {
+                            chunkData_2.Renderer.UpdateChunk();
+                        }
+                    }
+                    if (blockPosition.z == 0)
+                    {
+                        chunkPos_2 = GetChunkContainingBlock(blockWorldPos + Vector3Int.back);
+                        if (ChunkDatas.TryGetValue(chunkPos_2, out ChunkData chunkData_2))
+                        {
+                            chunkData_2.Renderer.UpdateChunk();
+                        }
+                    }
+                    if (blockPosition.x == 0)
+                    {
+                        chunkPos_2 = GetChunkContainingBlock(blockWorldPos + Vector3Int.left);
+                        if (ChunkDatas.TryGetValue(chunkPos_2, out ChunkData chunkData_2))
+                        {
+                            chunkData_2.Renderer.UpdateChunk();
+                        }
+                    }
+                    
                 }
             }
         }
@@ -134,6 +172,11 @@ public class GameWorld : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 
